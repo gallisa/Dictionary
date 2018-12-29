@@ -12,7 +12,8 @@ namespace ConsoleApplication6
         static void Main(string[] args)
         {
             InitDictionary();
-            ReplaceTextInFile(@"C:\Users\gb250153\Downloads\WhoAmI\WhoAmI1.txt", @"C:\Users\gb250153\Downloads\WhoAmI\WhoAmI2.txt", "u05d0", "א");
+           
+                ReplaceTextInFile(@"C:\Users\gb250153\Downloads\WhoAmI\WhoAmI1.txt", @"C:\Users\gb250153\Downloads\WhoAmI\WhoAmI2.txt");
             
         }
 
@@ -50,22 +51,41 @@ namespace ConsoleApplication6
 
         }
 
-        private static void ReplaceTextInFile(string originalFile, string outputFile, string searchTerm, string replaceTerm)
+        private static void ReplaceTextInFile(string originalFile, string outputFile)
         {
             string tempLineValue;
-            using (FileStream inputStream = File.OpenRead(originalFile))
-            {
-                using (StreamReader inputReader = new StreamReader(inputStream))
-                {
-                    using (StreamWriter outputWriter = File.AppendText(outputFile))
+            //string newLineValue;
+            
+            
+                using (FileStream inputStream = File.OpenRead(originalFile))
+                { 
+                    using (StreamReader inputReader = new StreamReader(inputStream))
                     {
-                        while (null != (tempLineValue = inputReader.ReadLine()))
+                   
+                        using (StreamWriter outputWriter = File.AppendText(outputFile))
                         {
-                            outputWriter.WriteLine(tempLineValue.Replace(searchTerm, replaceTerm));
+                            
+                            while (null != (tempLineValue = inputReader.ReadLine()))
+                            {
+                                foreach (KeyValuePair<string, string> entry in _myDictionary)
+                                {
+                                    if (tempLineValue.Contains(entry.Key))
+                                    {
+                                        string value = entry.Value;
+                                        tempLineValue = tempLineValue.Replace(entry.Key, value);
+                                    }
+
+                                
+                                       
+                                }
+                            outputWriter.WriteLine(tempLineValue);
+                            Console.WriteLine(tempLineValue);
+                            Console.ReadLine();
+                            }
+                        
                         }
                     }
                 }
-            }
         }
     }    
 }
